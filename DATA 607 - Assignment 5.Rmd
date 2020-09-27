@@ -1,0 +1,55 @@
+---
+title: "Assignment 5"
+author: "Cassie Boylan"
+date: "9/26/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load packages}
+library(dplyr)
+library(tidyr)
+library(tidyverse)
+library(reshape2)
+```
+
+```{r read file}
+airline <- read.csv("https://raw.githubusercontent.com/cassie-boylan/DATA-607-Assignment-5/master/airline_data.csv")
+```
+
+```{r rename-columns}
+names(airline)[1] <- "Airline"
+names(airline)[2] <- "Flight.Outcome"
+```
+
+```{r}
+airline <- airline %>% drop_na()
+```
+
+```{r}
+airline_resh <- melt(airline, id=c("Airline","Flight.Outcome"),na.rm=TRUE,variable.name="city",value.name="flights")
+```
+
+```{r}
+by_city<- airline_resh %>%
+  summarize(total_flights = sum(flights))
+
+```
+
+```{r}
+
+airline_tidy <- airline %>%
+  gather(key="city", value="outcome", Los.Angeles:Seattle, na.rm=TRUE)
+
+```
+
+```{r}
+airline_tidy2 <- airline %>% fill(Airline)
+
+```
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
